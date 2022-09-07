@@ -1,2 +1,2 @@
 # oaGrabber
-oaGrabber Project grabs data from hh.ru and other resources
+oaGrabber Project grabs data from many jobs resources and provides display interface to manage and publish vacancies in Django Admin Panel and special matching service.
