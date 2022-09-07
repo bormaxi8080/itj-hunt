@@ -1,0 +1,141 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>Check and get new positions</title>
+</head>
+<body>
+<div class="container pt-3">
+    <h1>{{ company.company_name }}</h1>
+    <div class="row">
+        <div class="col-12">
+            <div class="flex-column"><a href="{{ company.positions_url }}">{{ company.positions_url }}</a></div>
+            <ul>
+                {% for rule in company.companypositionparsingrule_set.all %}
+                    <li>{{ rule.parsing_rule }}: {{ rule.parsing_path }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <form action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.as_hidden }}
+            {% endfor %}
+            <div class="col-12 border rounded border-dark">
+                {{ positions_html|safe }}
+            </div>
+            <div class="col-12 pt-2"><input class="btn btn-warning" type="submit" value="Submit"></div>
+        </form>
+
+
+        <div class="col-12 pt-5">
+            <h1 class="text-success">New positions to parse</h1>
+            <table>
+                <tr>
+                    <th class="px-2 border-right">Position name</th>
+                    <th class="px-2">URL</th>
+                </tr>
+                {% for key, value in positions_dict.items %}
+                    {% if value.1 == 'new' %}
+                        <tr>
+                            <td class="px-2 border-right">{{ value.0 }}</td>
+                            <td class="px-2"><a href="{{ key }}">{{ key }}</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-12 pt-5">
+            <h1 class="text-secondary">Positions that are in ignore list (like ones not remote or from non-IT field)</h1>
+            <table>
+                <tr>
+                    <th class="px-2 border-right">Position name</th>
+                    <th class="px-2 border-right">URL</th>
+                    <th class="px-2">Position name in DB</th>
+                </tr>
+                {% for key, value in positions_dict.items %}
+                    {% if value.1 == 'ignore' %}
+                        <tr>
+                            <td class="px-2 border-right">{{ value.0 }}</td>
+                            <td class="px-2 border-right"><a href="{{ key }}">{{ key }}</a></td>
+                            <td class="px-2">{{ value.2 }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-12 pt-5">
+            <h1 class="text-secondary">Actual positions already in DB (present on the company website)</h1>
+            <table>
+                <tr>
+                    <th class="px-2 border-right">Position name</th>
+                    <th class="px-2 border-right">URL</th>
+                    <th class="px-2">Position name in DB</th>
+                </tr>
+                {% for key, value in positions_dict.items %}
+                    {% if value.1 == 'db' %}
+                        <tr>
+                            <td class="px-2 border-right">{{ value.0 }}</td>
+                            <td class="px-2 border-right"><a href="{{ key }}">{{ key }}</a></td>
+                            <td class="px-2">{{ value.2 }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-12 pt-5">
+            <h1 class="text-danger">Positions to archive (absent on the company website)</h1>
+            <table>
+                <tr>
+                    <th class="px-2 border-right">ID</th>
+                    <th class="px-2 border-right">Position name</th>
+                    <th class="px-2">URL</th>
+                </tr>
+                {% for key, value in db_positions_to_archive.items %}
+                    <tr>
+                        <td class="px-2 border-right"><a href="{% url 'admin:mycatalog_position_change' key %}">{{ key }}</a></td>
+                        <td class="px-2 border-right">{{ value.0 }}</td>
+                        <td class="px-2"><a href="{{ value.1 }}">{{ value.1 }}</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-12 pt-5">
+            <div class="pt-2 text-warning">This is an example of parsed position:</div>
+            <h1>{{ position_dict.title_html|safe }}</h1>
+            <div>Keywords: {{ position_dict.keywords }}</div>
+            <div>Location: {{ position_dict.location_html|safe }}</div>
+            <div><a href="{{ position_dict.position_url_to_parse }}">{{ position_dict.position_url_to_parse }}</a></div>
+        </div>
+        <div class="col-12 border rounded border-dark">{{ position_dict.description_html|safe }}</div>
+
+    </div>
+</div>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'mycatalog/style.css' %}">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</body>
+</html>

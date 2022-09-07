@@ -1,0 +1,51 @@
+{% extends "mycatalog/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+{% block meta_description %}{{ meta_descr }}{% endblock %}
+{% block meta_indexfollow %}{% if meta_noindex == '1' %}noindex,follow{% else %}index,follow{% endif %}{% endblock %}
+
+{% block content %}
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        <h1 class="text-center"><strong>{{ page_h1 }}</strong></h1>
+        <h5 class="text-center">We help you to find remote IT jobs worldwide</h5>
+        {% if search_string %}
+            <div class="row">
+                <div class="col-sm-auto">
+                    <div class="d-flex flex-row">
+
+                        <div class="p-2 ">
+                            <span class="border rounded bg-secondary text-light py-1 px-2">{{ search_string|upper }}</span></div>
+
+
+                        <div class="py-2">
+                            <a type="button" href="{% url 'mycatalog:index' %}" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if latest_positions_list %}
+            {% include page_template %}
+
+            {% block js %}
+                {{ block.super }}
+                <script>
+                    $.endlessPaginate({
+                        paginateOnScroll: true,
+                        paginateOnScrollMargin: 20
+                    });
+                </script>
+            {% endblock %}
+
+        {% else %}
+            <p>No positions are available.</p>
+        {% endif %}
+    </main>
+
+
+{% endblock %}

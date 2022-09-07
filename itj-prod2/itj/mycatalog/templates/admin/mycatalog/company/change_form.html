@@ -1,0 +1,8 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    <div class="submit-row">
+        <a class="historylink" target="_blank" href="{% url 'admin:check_and_get_new_positions' object_id %}">Get new positions</a>
+    </div>
+{% endblock %}

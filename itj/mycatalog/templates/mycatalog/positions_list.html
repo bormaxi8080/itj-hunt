@@ -1,0 +1,19 @@
+<div class="row mb-1 border rounded my-2 py-1">
+    <div class="col-sm-auto d-none d-sm-block">
+        <div class="mt-1"><a href="{% url 'mycatalog:company_detail' position.company_name_ref.slug %}">{{ position.company_name_ref.company_logo_tag }}</a></div>
+    </div>
+    <div class="col-sm">
+        <div class="d-flex flex-column">
+            <div class="px-2">
+                <strong><a
+                        href="{% url 'mycatalog:position_detail' position.id position.slug %}"
+                        class="text-info">{{ position.position_name }}</a></strong>
+            </div>
+            <div class="px-2">
+                <a href="{% url 'mycatalog:company_detail' position.company_name_ref.slug %}"
+                   class="text-dark">{{ position.company_name_ref.company_name }}</a>
+            </div>
+        </div>
+    </div>
+    {% include "mycatalog/positions_list_position_details.html" %}
+</div>

@@ -1,0 +1,3 @@
+User-agent: *
+Host: https://itcareers.dev
+Sitemap: https://itcareers.dev/sitemap.xml

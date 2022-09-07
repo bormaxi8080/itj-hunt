@@ -1,0 +1,22 @@
+.DS_store
+.idea
+
+*.log
+
+itj/.cache_httplib
+itj-prod2/.cache_httplib
+
+itj/.ebextensions
+itj-prod2/.ebextensions
+
+# Elastic Beanstalk Files
+itj/.elasticbeanstalk/*
+itj-prod2/.elasticbeanstalk/*
+
+!itj/.elasticbeanstalk/*.cfg.yml
+!itj/.elasticbeanstalk/config.yml
+!itj/!.elasticbeanstalk/*.global.yml
+
+!itj-prod2/.elasticbeanstalk/*.cfg.yml
+!itj-prod2/.elasticbeanstalk/config.yml
+!itj-prod2/!.elasticbeanstalk/*.global.yml

@@ -1,0 +1,17 @@
+1. Source tree to connect to Bitbucket: https://ru.atlassian.com/software/sourcetree
+2. Python 3.7.2: https://www.python.org/downloads/release/python-372/
+3. PostgreSQL 11.2: https://www.postgresql.org/download/windows/
+4. Django 2.1.7: https://www.djangoproject.com/download/ or pip install Django==2.1.7
+5. Psycopg 2.7.7: http://initd.org/psycopg/ or pip install psycopg2
+6. Pillow 5.4.1: pip install Pillow
+7. Bootstrap 4.3.1: https://getbootstrap.com/docs/4.3/getting-started/download/
+8. CKEditor 5.6.1: pip install django-ckeditor
+    and run the collectstatic management command: $ ./manage.py collectstatic (see installation guide at https://github.com/django-ckeditor/django-ckeditor)
+####9. download https://raw.githubusercontent.com/ckeditor/ckeditor-dev/master/skins/moono/skin.js and add it to 'itj\static\ckeditor\ckeditor\skins\moono\'
+10. Django-favicon 0.1.3: pip install django-favicon (https://pypi.org/project/django-favicon/)
+11. django-el-pagination-3.2.4: pip install django-el-pagination
+12. django-storages-1.7.1: pip install django-storages
+13. boto3-1.9.146 botocore-1.12.146 s3transfer-0.2.0: pip install boto3
+14. beautifulsoup4-4.7.1: pip install beautifulsoup4
+15. selenium-3.141.0:: pip install selenium
+16. Download PhantomJS: https://phantomjs.org/download.html and put it into 'phantomjs-2.1.1-windows' inside of the project folder

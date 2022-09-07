@@ -1,0 +1,182 @@
+{% extends "mycatalog/base.html" %}
+
+{% block last-modified %}{{position.pub_date|date:"D, d M Y H:i:s"}}{% endblock %}
+{% block title %}{{ position.position_name }} at {{ position.company_name_ref.company_name }} | IT Careers{% endblock %}
+{% block meta_description %}This job is remote-friendly. You could work from home, cafe, coworking or even company office.{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="d-flex flex-row">
+                    <div class="d-flex flex-column pr-5">
+
+                        {% if position.category_name_ref %}
+                            <div class="pt-3 h6">
+                                <a class="text-dark"
+                                   href="{% url 'mycatalog:index_category_filtered' position.category_name_ref.slug %}">{{ position.category_name_ref.category_name }}</a>
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-sm-auto">
+                                <h1><strong>{{ position.position_name }}</strong></h1>
+                            </div>
+                            <div class="col-sm py-2">
+                                {% if not position.archive_flag %}
+                                    <a href="{% url 'mycatalog:position-counter-redirect' position.id %}"
+                                       class="btn btn-info active" role="button" target="_blank"
+                                       aria-pressed="true" rel="nofollow">Apply for the position</a>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary " disabled>Archived position</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                            <div>
+                                <ul class="list-inline">
+                                    {% if position.get_employment_type_value %}<li class="list-inline-item">{{ position.get_employment_type_value }}.</li>{% endif %}
+                                    {% if position.get_salary %}<li class="list-inline-item">{{ position.get_salary }}.</li>{% endif %}
+                                    {% if position.visa_sponsorship %}<li class="list-inline-item"><span class="text-success">Visa sponsorship.</span></li>{% endif %}
+                                    {% if position.work_worldwide %}<li class="list-inline-item"><span class="text-success">Can work worldwide.</span></li>{% endif %}
+                                </ul>
+                            </div>
+
+                        {% if position.keyword_ref.all %}
+                            <div class="pt-3 h6 extra-line-height">
+                                {% for keyword in position.keyword_ref.all %}
+                                    <strong>
+                                        <a href="{% url 'mycatalog:index_keyword_filtered' keyword.slug %}"
+                                           class="border rounded bg-secondary text-light py-1 px-2">{{ keyword.keyword|upper }}</a>
+                                    </strong>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <div class="d-flex flex-row ">
+                    {% if position.company_name_ref.company_logo %}
+                        <div class="pt-2 pr-3">
+                            <img src="{{ position.company_name_ref.company_logo.url }}"
+                                 width="60px" alt="{{ position.company_name_ref.company_name }} logo"/>
+                        </div>
+                    {% endif %}
+                    <div class="pt-2 pr-5">
+                        <div><a href="{% url 'mycatalog:company_detail' position.company_name_ref.slug %}"
+                           class="text-info h4">{{ position.company_name_ref.company_name }}</a>
+                        </div>
+                        <div><small>
+                            {% if position.locations %}
+                                {{ position.locations }}
+                                {% if position.language %}/ {% endif %}
+                            {% elif position.company_name_ref.offices_locations %}
+                                {{ position.company_name_ref.offices_locations }}
+                                {% if position.language %}/ {% endif %}
+                            {% endif %}
+                            {% if position.language %}
+                                {{ position.language }}
+                            {% endif %}
+                            {% if position.company_name_ref.get_website_object.url_text %}
+                                / <a href="{{ position.company_name_ref.get_website_object.url_text }}" target="_blank"
+                                   class="text-info">Сompany website</a>
+                            {% endif %}
+                        </small></div>
+                    </div>
+                </div>
+            </div>
+            {% if position.job_description %}
+                <div class="col-12 pt-4  pb-3">
+                    <div class="d-flex flex-column">
+
+                        <div>{{ position.job_description|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if position.responsibilities %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <div class="h4">Responsibilites</div>
+                        <div>{{ position.responsibilities|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if position.requirements %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <div class="h4">Requirements</div>
+                        <div>{{ position.requirements|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if position.company_name_ref.companybenefit_set.all %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <div class="h4">Benefits & Perks</div>
+                        <div>
+                            <ul>
+                                {% for benefit in position.company_name_ref.companybenefit_set.all %}
+                                    <li>{{ benefit.benefit_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if position.how_to_apply %}
+                <div class="col-12">
+                    <div class="d-flex flex-column pb-2">
+                        <div class="h4">How to Apply</div>
+                        <div>{{ position.how_to_apply|safe }}</div>
+                        {% if position.apply_email %}
+                            <div>Please apply using email <a class="text-info" href="mailto:{{ position.apply_email|safe }}">{{ position.apply_email|safe }}</a></div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-12">
+                <div class="h6 pt-2">
+                    Published {{ position.published_ago }}
+                    {% if position.source %}
+                        / Source: <a class="text-dark" href="{{ position.source_url }}" target="_blank">{{ position.source }}</a>
+                    {% endif %}
+                </div>
+                <div class="text-center align-self-center py-4">
+                    {% if not position.archive_flag %}
+                        <a href="{% url 'mycatalog:position-counter-redirect' position.id %}"
+                           class="btn btn-info active" role="button" target="_blank"
+                           aria-pressed="true" rel="nofollow">Apply for the position</a>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary " disabled>Archived position</button>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% if related_jobs_list %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-row justify-content-between">
+
+                            <div class="h4 ">Related Jobs</div>
+                            {% if position.category_name_ref %}
+                                <div>
+                                    <strong><a class="text-info"
+                                          href="{% url 'mycatalog:index_category_filtered' position.category_name_ref.slug %}">See
+                                        more remote {{ position.category_name_ref.category_name }} jobs</a></strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% for position in related_jobs_list %}
+                                {% include "mycatalog/positions_list.html" %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

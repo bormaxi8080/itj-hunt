@@ -1,0 +1,36 @@
+<div class="col-sm">
+    <div class="d-flex flex-column">
+        <div class="px-2 h6">
+            {% if position.category_name_ref %}{{ position.category_name_ref.category_name }}{% endif %}
+            {% if position.get_employment_type_value %}/ {{ position.get_employment_type_value }}{% endif %}
+            {% if position.locations %}/ {{ position.locations }}{% endif %}
+            {% if position.language %}/ {{ position.language }}{% endif %}
+            {% if position.visa_sponsorship %}/ <span class="text-success">Visa sponsorship</span>{% endif %}
+            {% if position.work_worldwide %}/ <span class="text-success">Work worldwide</span>{% endif %}
+            {% if position.get_salary %}/ {{ position.get_salary }}{% endif %}
+            {% if position.source %}
+                / <a class="text-dark" href="{{ position.source_url }}" target="_blank">{{ position.source }}</a>
+            {% endif %}
+        </div>
+        {% if position.keyword_ref.all %}
+            <div class="py-1 px-2 h6 extra-line-height">
+                {% for keyword in position.keyword_ref.all %}
+                    <strong>
+                        <a href="{% url 'mycatalog:index_keyword_filtered' keyword.slug %}"
+                           class="border rounded bg-secondary text-light py-1 px-2 text-nowrap" >{{ keyword.keyword|upper }}</a>
+                    </strong>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+<div class="col-sm-auto text-center align-self-center">
+    <div class="d-flex flex-column ">
+        <div class="d-none d-sm-block"><a
+                href="{% url 'mycatalog:position_detail' position.id position.slug %}"
+                class="btn btn-info active" role="button"
+                aria-pressed="true">View</a>
+        </div>
+    </div>
+</div>

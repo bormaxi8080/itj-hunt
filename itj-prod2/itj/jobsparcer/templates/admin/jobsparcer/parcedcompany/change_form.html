@@ -1,0 +1,9 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    <div class="submit-row">
+        <input type="submit" value="Copy CB Logo" name="_copy-cb-logo">
+        <input type="submit" value="Copy CB Logo to main catalog" name="_copy-cb-logo_to_main_catalog">
+    </div>
+{% endblock %}

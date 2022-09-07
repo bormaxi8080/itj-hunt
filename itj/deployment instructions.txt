@@ -1,0 +1,46 @@
+1. https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html
+2. https://dzone.com/articles/making-django-elastic-beanstalk-and-aws-rds-play-w
+2. создать амазон аккаунт и задать пользователя, через которого будем деплоить приложение
+3. установить EB CLI: $ pip install awsebcli --upgrade --user
+4. создать директорию, из которой будем деплоить
+5.
+6. eb init, указать Ohio, указать данные пользователя деплоителя и подключиться к git репозиторию в CodeCommit
+7. работа с гитом, чтобы подключить репозиторий из CodeCommit
+c:\Projects\eb>git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/itj
+c:\Projects\eb>cd itj
+c:\Projects\eb\itj>git add .
+c:\Projects\eb\itj>git commit -m "first commit"
+c:\Projects\eb\itj>git push --all -u
+
+7. работа с гитом, чтобы без CodeCommit
+eb codesource local
+git clone https://anin_artem@bitbucket.org/my_art/itj.git
+git fetch
+git pull
+
+7. https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html
+7.1 скопировать рабочий код в папку eb\itj
+7.2 добавить конфигов в c:\Projects\eb\itj\.ebextensions\
+
+8. eb use itj-env
+9. eb status
+10. прописать в settings.py в ALLOWED_HOSTS урл из CNAME из eb status
+11. создать внешний RDS инстанс и подключиться к нему: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.RDS.html
+12. настроить хранение статики и медиа файлов на S3: https://www.caktusgroup.com/blog/2014/11/10/Using-Amazon-S3-to-store-your-Django-sites-static-and-media-files/
+http://racingtadpole.com/blog/django-aws-eb-s3/
+https://simpleisbetterthancomplex.com/tutorial/2017/08/01/how-to-setup-amazon-s3-in-a-django-project.html
+
+!!!!!!!!!!!!!!! 12. eb deploy
+
+
+
+
+
+каждый деплоймент:
+git archive -o latest.zip HEAD
+git pull
+eb deploy
+или eb deploy --label itj-v1.0.16-190601
+
+чтобы скачать логи в zip архиве:
+eb logs -z

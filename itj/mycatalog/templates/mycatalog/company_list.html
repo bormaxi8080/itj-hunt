@@ -1,0 +1,44 @@
+{% extends "mycatalog/base.html" %}
+
+{% block title %}Companies with remote jobs | IT Careers{% endblock %}
+{% block meta_description %}A list of remote-friendly companies, which post their jobs on IT Careers. Enforce your career with the companies being great IT professional.{% endblock %}
+
+{% block content %}
+    <main role="main" class="container">
+        <h1 class="text-center"><strong>Remote Companies on IT CAREERS</strong></h1>
+        <h5 class="text-center">Working in different areas, these companies support remote-friendly environment.</h5>
+        {% if companies_list %}
+            {% regroup companies_list by company_name.0|capfirst as companies_list_by_first_letter %}
+            {% for comp_list in companies_list_by_first_letter %}
+                <div class="container ">
+                    <div class="row mt-5">
+                        <strong>{{ comp_list.grouper }}</strong>
+                    </div>
+                    <div class="row mt-3">
+                        {% for company in comp_list.list %}
+                            <div class="col-sm">
+                                <div class="d-flex flex-row">
+                                    <div class="pt-3 pr-3">
+                                        <a href="{% url 'mycatalog:company_detail' company.slug %}"
+                                                             target="_blank">{{company.company_logo_tag }}</a>
+                                    </div>
+                                    <div class="pt-3 ">
+                                        <a href="{% url 'mycatalog:company_detail' company.slug %}" class="text-dark">{{ company.company_name }}</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+                                </div>
+                                <div class="row my-2">
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No companies are available.</p>
+        {% endif %}
+    </main>
+{% endblock %}

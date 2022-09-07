@@ -1,0 +1,16 @@
+{% load el_pagination_tags %}
+{% paginate latest_positions_list %}
+{% regroup latest_positions_list by published_ago as positions_list_by_date %}
+
+
+{% for position_list in positions_list_by_date %}
+    <div class="container ">
+        <div class="row ">
+            <strong>{{ position_list.grouper }}</strong>
+        </div>
+        {% for position in position_list.list %}
+            {% include "mycatalog/positions_list.html" %}
+        {% endfor %}
+    </div>
+{% endfor %}
+{% show_more %}

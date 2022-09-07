@@ -1,0 +1,144 @@
+{% extends "mycatalog/base.html" %}
+
+{% block last-modified %}{{company.edited_date|date:"D, d M Y H:i:s"}}{% endblock %}
+{% block title %}Remote jobs at {{ company.company_name }} | IT Careers{% endblock %}
+{% block meta_description %}{{ company.company_name }} is a remote friendly company. Enforce your career with the company being great IT professional. You could work remotely here.{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-column pr-5">
+
+                    <div class="d-flex flex-row">
+                        {% if company.company_logo %}
+                            <div class="pt-2 pr-3">
+                                <img src="{{ company.company_logo.url }}"
+                                     width="60px" alt="{{ company.company_name }} logo"/>
+                            </div>
+                        {% endif %}
+                        <div class="pt-2 flex-column">
+                            <h1><strong>{{ company.company_name }}</strong></h1>
+
+                            {% if company.domain_name.all %}
+                                <div class="h6">
+                                    {% for domain in company.domain_name.all %}
+                                        {% if not forloop.first %}/&nbsp{% endif %}{{ domain.domain_name }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if company.funding and company.get_crunchbase_object.url_text %}
+                                <div class="h6">
+                                    <a class="text-dark" target="_blank" href="{{ company.get_crunchbase_object.url_text }}">
+                                        Raised {{ company.raised }} in {{ company.num_of_rounds }}
+                                        round{{ company.num_of_rounds|pluralize:",s" }}. The latest round was
+                                        in {{ company.last_round_announced_date|date:"F Y" }}.
+                                    </a>
+                                </div>
+                            {% endif %}
+
+                            <div class="h6">
+                                <ul class="list-inline">
+
+                                    <li class="list-inline-item">
+                                        {% if company.founded_year %}Founded in {{ company.founded_year }}.{% endif %}
+                                    </li>
+                                    <li class="list-inline-item">
+                                        {% if company.number_of_people %}{{ company.get_number_of_people_value }} people.{% endif %}
+                                    </li>
+                                    <li class="list-inline-item">
+                                        {% if company.offices_locations %}{{ company.offices_locations }}.{% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% if company.get_website_object.url_text %}
+                        <div class="d-flex flex-row ">
+                            <div class="pb-2">
+                                <a href="{{ company.get_website_object.url_text }}" target="_blank"
+                                   class="text-info">Company website</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="d-flex flex-row ">
+                        {% if company.companyurl_set.all %}
+                            <ul class="list-inline">{% for comp_url in company.companyurl_set.all %}
+                                {% if comp_url.url_type != 'MAIN' %}
+                                    <li class="list-inline-item">
+                                        <a href="{{ comp_url.url_text }}" target="_blank"
+                                           class="text-info">{{ comp_url.get_url_type_value }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}</ul>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+            {% if company.company_pitch %}
+                <div class="col-12 pt-4">
+                    <div class="d-flex flex-column">
+                        <div>{{ company.company_pitch|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if company.description %}
+                <div class="col-12 pt-4">
+                    <div class="d-flex flex-column">
+                        <div>{{ company.description|safe }}</div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if company.companybenefit_set.all %}
+                <div class="col-12">
+                    <div class="d-flex flex-column">
+                        <div class="h4">Benefits & Perks</div>
+                        <div>
+                            <ul>
+                                {% for benefit in company.companybenefit_set.all %}
+                                    <li>{{ benefit.benefit_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-12">
+                <div class="d-flex flex-column py-3">
+                    <div class="h6 text-secondary">Info last updated in {{ company.edited_date|date:"F Y" }}</div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <div class="h4 ">Job Openings</div>
+                    <div>
+                        {% if company.sorted_positions_set.all %}
+                            {% for position in company.sorted_positions_set.all %}
+                                <div class="row mb-1 border rounded my-2 py-1">
+                                    <div class="col-sm">
+                                        <div class="d-flex flex-column">
+                                            <div class="px-2">
+                                                <strong><a
+                                                        href="{% url 'mycatalog:position_detail' position.id position.slug %}"
+                                                        class="text-info">{{ position.position_name }}</a></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% include "mycatalog/positions_list_position_details.html" %}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No active jobs so far.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
