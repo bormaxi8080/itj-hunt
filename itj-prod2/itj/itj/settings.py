@@ -24,7 +24,7 @@ def rel(x):
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ca)k4e=scknxw1zb6u5y9ccvfrp2^w9zedxomn$-gkt-qpc*d='
+SECRET_KEY = 'SECRET_KEY'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if 'RDS_HOSTNAME' in os.environ:

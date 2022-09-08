@@ -1,7 +1,10 @@
 .DS_store
 .idea
 
+SECRET_KEY.txt
+
 *.log
+*.zip
 
 itj/.cache_httplib
 itj-prod2/.cache_httplib
@@ -12,6 +15,7 @@ itj-prod2/.ebextensions
 # Elastic Beanstalk Files
 itj/.elasticbeanstalk/*
 itj-prod2/.elasticbeanstalk/*
+itj-prod2/itj/.elasticbeanstalk/*
 
 !itj/.elasticbeanstalk/*.cfg.yml
 !itj/.elasticbeanstalk/config.yml
@@ -19,4 +23,8 @@ itj-prod2/.elasticbeanstalk/*
 
 !itj-prod2/.elasticbeanstalk/*.cfg.yml
 !itj-prod2/.elasticbeanstalk/config.yml
-!itj-prod2/!.elasticbeanstalk/*.global.yml
+!itj-prod2/.elasticbeanstalk/*.global.yml
+
+!itj-prod2/itj/.elasticbeanstalk/*.cfg.yml
+!itj-prod2/itj/.elasticbeanstalk/config.yml
+!itj-prod2/itj/.elasticbeanstalk/*.global.yml
